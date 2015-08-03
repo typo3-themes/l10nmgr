@@ -48,7 +48,9 @@ function highlighttab(aobject) {
  */
 function collectddtabs() {
 	var tabobj = document.getElementById('ddtabs')
-	tabobjlinks = tabobj.getElementsByTagName('A')
+	if(typeof tabobj != 'undefined' && tabobj) {
+		tabobjlinks = tabobj.getElementsByTagName('A')
+	}
 }
 
 /**
@@ -58,7 +60,9 @@ function collectddtabs() {
  */
 function do_onload() {
 	collectddtabs()
-	expandcontent(initialtab[1], tabobjlinks[initialtab[0] - 1])
+	if(typeof tabobjlinks != 'undefined' && tabobjlinks) {
+		expandcontent(initialtab[1], tabobjlinks[initialtab[0] - 1])
+	}
 }
 
 if (window.addEventListener)

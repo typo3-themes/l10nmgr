@@ -139,7 +139,7 @@ class Module1 extends BaseScriptClass
             $content .= '</tr>';
             $content .= '</thead>';
             $content .= '<tbody>';
-            $informationIcon = IconUtility::getSpriteIcon('actions-document-info');
+            $informationIcon = IconUtility::getSpriteIcon('actions-document-info', array());
             foreach ($l10nConfigurations as $record) {
                 $configurationDetails = '<a class="tooltip" href="#tooltip_' . $record['uid'] . '">' . $informationIcon . '</a>';
                 $configurationDetails .= '<div style="display:none;" id="tooltip_' . $record['uid'] . '" class="infotip">';
@@ -272,7 +272,7 @@ class Module1 extends BaseScriptClass
 
         $buttons['reload'] = '<a href="' . $GLOBALS['MCONF']['_'] . '" title="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xml:labels.reload',
                 true) . '">' .
-            IconUtility::getSpriteIcon('actions-system-refresh') .
+            IconUtility::getSpriteIcon('actions-system-refresh', array()) .
             '</a>';
 
         // Shortcut

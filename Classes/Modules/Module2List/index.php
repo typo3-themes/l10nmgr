@@ -167,9 +167,11 @@ class Module2List extends BaseScriptClass
 
             foreach ($elements as $el) {
                 $cells = '';
-
+				$rec_on = array();
                 // Get CURRENT online record and icon based on "t3ver_oid":
-                $rec_on = BackendUtility::getRecord($el[0], $el[1]);
+	            if($el[0] !== '' && $el[1] > 0) {
+		            $rec_on = BackendUtility::getRecord($el[0], $el[1]);
+	            }
                 $icon = IconUtility::getSpriteIconForRecord($el[0], $rec_on);
                 $icon = $this->doc->wrapClickMenuOnIcon($icon, $el[0], $rec_on['uid'], 2);
 

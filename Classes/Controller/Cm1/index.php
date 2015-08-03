@@ -184,8 +184,8 @@ class Cm1 extends BaseScriptClass
 					document.location = URL;
 				}
 			</script>
-			<script language="javascript" type="text/javascript" src="' . GeneralUtility::resolveBackPath($GLOBALS['BACK_PATH'] . \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath('l10nmgr') . 'res/contrib/tabs.js') . '"></script>
-			<link rel="stylesheet" type="text/css" href="' . GeneralUtility::resolveBackPath($GLOBALS['BACK_PATH'] . \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath('l10nmgr') . 'res/contrib/tabs.css') . '" />';
+			<script language="javascript" type="text/javascript" src="' . GeneralUtility::resolveBackPath($GLOBALS['BACK_PATH'] . \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath('l10nmgr') . 'Resources/Public/Contrib/tabs.js') . '"></script>
+			<link rel="stylesheet" type="text/css" href="' . GeneralUtility::resolveBackPath($GLOBALS['BACK_PATH'] . \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath('l10nmgr') . 'Resources/Public/Contrib/tabs.css') . '" />';
 
         // Find l10n configuration record
         /** @var $l10ncfgObj L10nConfiguration */
@@ -794,7 +794,7 @@ class Cm1 extends BaseScriptClass
 
         $buttons['reload'] = '<a href="' . $GLOBALS['MCONF']['_'] . '" title="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xml:labels.reload',
                 true) . '">' .
-            IconUtility::getSpriteIcon('actions-system-refresh') .
+            IconUtility::getSpriteIcon('actions-system-refresh', array()) .
             '</a>';
 
         // Shortcut

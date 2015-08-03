@@ -249,8 +249,7 @@ class Cm2 extends \TYPO3\CMS\Backend\Module\BaseScriptClass
         if ($rec['translation_recuid']) {
             $translationTable = $this->l10nMgrTools->t8Tools->getTranslationTable($rec['tablename']);
             $translationRecord = t3lib_BEfunc::getRecordWSOL($translationTable, $rec['translation_recuid']);
-            $icon = \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIconForRecord($translationTable,
-                $translationRecord);
+            $icon = \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIconForRecord($translationTable, $translationRecord);
             $title = t3lib_BEfunc::getRecordTitle($translationTable, $translationRecord, 1);
             $translationRecStr = '<a href="#" onclick="' . htmlspecialchars(t3lib_BEfunc::editOnClick('&edit[' . $translationTable . '][' . $translationRecord['uid'] . ']=edit',
                     $this->doc->backPath)) . '">' . $icon . $title . '</a>';
