@@ -20,7 +20,7 @@ return array (
         'fe_admin_fieldList' => 'title, source_lang, l10ncfg_id, crdate, delete, exclude',
     ),
     'interface' => array(
-        'showRecordFieldList' => 'title,crdate, tablelist,translation_lang,source_lang'
+        'showRecordFieldList' => 'title,crdate,tablelist,translation_lang,source_lang,configuration,l10ncfg_id,filename'
     ),
     'columns' => array(
         'title' => array(
@@ -61,18 +61,40 @@ return array (
                 'readOnly' => 1,
             )
         ),
-        'source_lang' => array(
-            'exclude' => 1,
-            'label' => $l10n . ':tx_l10nmgr_cfg.sourceLang',
-            'config' => array(
-                'type' => 'input',
-                'size' => '48',
+	    'source_lang' => array(
+		    'exclude' => 1,
+		    'label' => $l10n . ':tx_l10nmgr_cfg.sourceLang',
+		    'config' => array(
+			    'type' => 'input',
+			    'size' => '48',
+			    'readOnly' => 1,
+		    )
+	    ),
+	    'l10ncfg_id' => array(
+			'exclude' => 1,
+			'label' => $l10n . ':tx_l10nmgr_priorities.configuration',
+			'config' => array(
+				'type' => 'group',
+				'internal_type' => 'db',
+				'allowed' => 'tx_l10nmgr_cfg',
+				'size' => 1,
+				'minitems' => 0,
+				'maxitems' => 1,
                 'readOnly' => 1,
-            )
-        ),
+			)
+	    ),
+	    'filename' => array(
+		    'exclude' => 1,
+		    'label' => $l10n . ':tx_l10nmgr_cfg.filename',
+		    'config' => array(
+			    'type' => 'input',
+			    'size' => '48',
+			    'readOnly' => 1,
+		    )
+	    ),
     ),
     'types' => array(
-        '0' => array('showitem' => 'title, crdate, translation_lang, tablelist, source_lang')
+        '0' => array('showitem' => 'title, crdate, translation_lang, tablelist, source_lang, l10ncfg_id, exportType, filename')
     ),
     'palettes' => array(
         '1' => array('showitem' => '')
