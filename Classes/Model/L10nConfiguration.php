@@ -108,7 +108,7 @@ class L10nConfiguration
         $depth = $l10ncfg['depth'];
 
         // Initialize tree object:
-        /** @var $tree t3lib_pageTree */
+        /** @var $tree PageTreeView */
         $tree = GeneralUtility::makeInstance(PageTreeView::class);
         $tree->init('AND ' . $GLOBALS['BE_USER']->getPagePermsClause(1));
         $tree->addField('l18n_cfg');

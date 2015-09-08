@@ -51,7 +51,7 @@ class CatXmlView extends AbstractExportView
 
     var $exportType = '1';
 
-    function CatXmlView($l10ncfgObj, $sysLang)
+    function __construct($l10ncfgObj, $sysLang)
     {
         parent::__construct($l10ncfgObj, $sysLang);
     }

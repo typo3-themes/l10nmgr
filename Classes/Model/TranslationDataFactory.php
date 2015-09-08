@@ -254,7 +254,7 @@ class TranslationDataFactory
      **/
     function _getParsedCATXMLFromOldFormat($fileContent)
     {
-        /** @var $parseHTML t3lib_parseHTML_proc */
+        /** @var $parseHTML RteHtmlParser */
         $parseHTML = GeneralUtility::makeInstance(RteHtmlParser::class);
         $xmlNodes = GeneralUtility::xml2tree(str_replace('&nbsp;', '&#160;', $fileContent),
             2); // For some reason PHP chokes on incoming &nbsp; in XML!

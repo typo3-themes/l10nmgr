@@ -1,7 +1,7 @@
 <?php
 namespace Localizationteam\L10nmgr\View;
 
-use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\Utility\MathUtility;
 
 class Template
 {
@@ -113,6 +113,6 @@ class Template
      */
     function setPageId($pid)
     {
-        $this->pageId = GeneralUtility::intval_positive($pid);
+        $this->pageId = MathUtility::convertToPositiveInteger($pid);
     }
 }

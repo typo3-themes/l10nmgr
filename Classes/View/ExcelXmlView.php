@@ -44,7 +44,7 @@ class ExcelXmlView extends AbstractExportView
      */
     var $forcedSourceLanguage = false;
 
-    function ExcelXmlView($l10ncfgObj, $sysLang)
+    function __construct($l10ncfgObj, $sysLang)
     {
         parent::__construct($l10ncfgObj, $sysLang);
     }

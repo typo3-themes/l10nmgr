@@ -100,7 +100,7 @@ class Tools
 	 */
     function __construct()
     {
-        /** @var $this ->t8tools t3lib_transl8tool */
+        /** @var $this ->t8tools TranslationConfigurationProvider */
         $this->t8Tools = GeneralUtility::makeInstance(TranslationConfigurationProvider::class);
 
         // Find all system languages:
@@ -701,7 +701,7 @@ class Tools
                         if (is_array($currentValueArray)) {
 
                             // Create and call iterator object:
-                            /** @var $flexObj t3lib_flexformtools */
+                            /** @var $flexObj FlexFormTools */
                             $flexObj = GeneralUtility::makeInstance(FlexFormTools::class);
                             $flexObj->traverseFlexFormXMLData($table, $field, $row, $this,
                                 'translationDetails_flexFormCallBack');

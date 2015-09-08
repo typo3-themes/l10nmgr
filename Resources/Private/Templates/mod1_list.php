@@ -1,4 +1,6 @@
 <?php
+use TYPO3\CMS\Backend\Utility\BackendUtility;
+
 if (!is_array($this->getRegistryData())) {
     exit('no data');
 }
@@ -50,9 +52,9 @@ echo $gD5->spacer(5); ?>
                     $gD6->icons(1); ?>
                 </a>
 
-                <?php $parentPageArray = t3lib_BEfunc::getRecord('pages', $configurationElementArray['pid']); ?>
-                <?php $staticInfoTablesArray = t3lib_BEfunc::getRecord('static_languages',
-                    \TYPO3\CMS\Core\Utility\GeneralUtility::intval_positive($configurationElementArray['sourceLangStaticId'])); ?>
+                <?php $parentPageArray = BackendUtility::getRecord('pages', $configurationElementArray['pid']); ?>
+                <?php $staticInfoTablesArray = BackendUtility::getRecord('static_languages',
+                    \TYPO3\CMS\Core\Utility\MathUtility::convertToPositiveInteger($configurationElementArray['sourceLangStaticId'])); ?>
 
                 <div style="display:none;" id="<?php echo 'tooltip_' . $configurationElementArray['uid']; ?>"
                      class="infotip">
@@ -101,8 +103,8 @@ echo $gD5->spacer(5); ?>
                     </table>
                 </div>
             </td>
-            <td><?php echo '<a href="' . \TYPO3\CMS\Core\Utility\GeneralUtility::resolveBackPath($BACK_PATH . \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath('l10nmgr')) . 'cm1/index.php?id=' . $configurationElementArray['uid'] . '&srcPID=' . \TYPO3\CMS\Core\Utility\GeneralUtility::intval_positive($this->getPageId()) . '">' . $configurationElementArray['title'] . '</a>'; ?></td>
-            <td><?php echo current(t3lib_BEfunc::getRecordPath($configurationElementArray['pid'], '1', 20, 50)); ?></td>
+            <td><?php echo '<a href="' . \TYPO3\CMS\Core\Utility\GeneralUtility::resolveBackPath($BACK_PATH . \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath('l10nmgr')) . 'cm1/index.php?id=' . $configurationElementArray['uid'] . '&srcPID=' . \TYPO3\CMS\Core\Utility\MathUtility::convertToPositiveInteger($this->getPageId()) . '">' . $configurationElementArray['title'] . '</a>'; ?></td>
+            <td><?php echo current(BackendUtility::getRecordPath($configurationElementArray['pid'], '1', 20, 50)); ?></td>
             <td><?php echo $configurationElementArray['depth']; ?></td>
             <td><?php echo $configurationElementArray['tablelist']; ?></td>
             <td><?php echo $configurationElementArray['exclude']; ?></td>

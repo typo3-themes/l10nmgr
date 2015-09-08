@@ -53,6 +53,7 @@ namespace Localizationteam\L10nmgr;
 // Include API
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\Utility\MathUtility;
 use Localizationteam\L10nmgr\Model\Tools\Tools;
 
 
@@ -152,9 +153,9 @@ Traversing page tree and building an index of translation needs
         );
 
         $startingPoints = GeneralUtility::intExplode(',', $this->cli_argValue('--pid'));
-        $workspaceID = $this->cli_isArg('--workspace') ? GeneralUtility::intInRange($this->cli_argValue('--workspace'),
+        $workspaceID = $this->cli_isArg('--workspace') ? MathUtility::forceIntegerInRange($this->cli_argValue('--workspace'),
             -1) : 0;
-        $depth = $this->cli_isArg('--depth') ? GeneralUtility::intInRange($this->cli_argValue('--depth'),
+        $depth = $this->cli_isArg('--depth') ? MathUtility::forceIntegerInRange($this->cli_argValue('--depth'),
             0) : 1000;
 
         if ($workspaceID != 0) {

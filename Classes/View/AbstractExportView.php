@@ -123,7 +123,7 @@ abstract class AbstractExportView
 
         $res = $GLOBALS['TYPO3_DB']->exec_INSERTquery('tx_l10nmgr_exportdata', $field_values);
 
-        #\TYPO3\CMS\Core\Utility\GeneralUtility::debug();
+        #\TYPO3\CMS\Core\Utility\DebugUtility::debug();
         return $res;
     }
 
