@@ -69,7 +69,7 @@ class CatXmlImportManager
      */
     var $_errorMsg = array();
 
-    function tx_l10nmgr_CATXMLImportManager($file, $sysLang, $xmlString)
+    function __construct($file, $sysLang, $xmlString)
     {
         $this->sysLang = $sysLang;
         if (!empty($file)) {
@@ -90,7 +90,7 @@ class CatXmlImportManager
             3); // For some reason PHP chokes on incoming  &nbsp; in XML!
 
         if (!is_array($this->xmlNodes)) {
-            $this->_errorMsg[] = $LANG->getLL('import.manager.error.parsing.xml2tree.message') . $this->xmlNodes;
+            $this->_errorMsg[] = $LANG->getLL('import.manager.error.parsing.xml2tree.message') . $this->xmlNodes . ' Content: ' . $fileContent;
 
             return false;
         }
