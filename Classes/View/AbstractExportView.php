@@ -26,6 +26,7 @@ namespace Localizationteam\L10nmgr\View;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+use TYPO3\CMS\Core\Database\DatabaseConnection;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -121,7 +122,20 @@ abstract class AbstractExportView
             'exportType' => $this->exportType
         );
 
-        $res = $GLOBALS['TYPO3_DB']->exec_INSERTquery('tx_l10nmgr_exportdata', $field_values);
+        $res = $this->getDatabaseConnection()->exec_INSERTquery('tx_l10nmgr_exportdata', $field_values);
+
+        if (is_array($TYPO3_CONF_VARS['EXTCONF']['l10nmgr']['exportView'])) {
+            $params = array(
+                'uid' => $this->getDatabaseConnection()->sql_insert_id(),
+                'data' => $field_values
+            );
+            foreach ($TYPO3_CONF_VARS['EXTCONF']['l10nmgr']['exportView'] as $classData) {
+                $postSaveProcessor = GeneralUtility::getUserObj($classData);
+                if ($postSaveProcessor instanceof PostSaveInterface) {
+                    $postInitializationProcessor->postExportAction($params);
+                }
+            }
+        }
 
         #\TYPO3\CMS\Core\Utility\DebugUtility::debug();
         return $res;
@@ -198,13 +212,13 @@ abstract class AbstractExportView
     {
         $ret = false;
 
-        $res = $GLOBALS['TYPO3_DB']->exec_SELECTquery(
+        $res = $this->getDatabaseConnection()->exec_SELECTquery(
             'l10ncfg_id,exportType,translation_lang',
             'tx_l10nmgr_exportdata',
             'l10ncfg_id =' . $this->l10ncfgObj->getData('uid') . ' AND exportType = ' . $this->exportType . ' AND translation_lang = ' . $this->sysLang
         );
-        if (!$GLOBALS['TYPO3_DB']->sql_error()) {
-            $numRows = $GLOBALS['TYPO3_DB']->sql_num_rows($res);
+        if (!$this->getDatabaseConnection()->sql_error()) {
+            $numRows = $this->getDatabaseConnection()->sql_num_rows($res);
         } else {
             $numRows = 0;
         }
@@ -287,7 +301,7 @@ abstract class AbstractExportView
     {
         $exports = array();
 
-        $res = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows(
+        $res = $this->getDatabaseConnection()->exec_SELECTgetRows(
             'crdate,l10ncfg_id,exportType,translation_lang,filename',
             'tx_l10nmgr_exportdata',
             'l10ncfg_id = ' . $this->l10ncfgObj->getData('uid') . ' AND exportType = ' . $this->exportType . ' AND translation_lang = ' . $this->sysLang,
@@ -427,5 +441,12 @@ abstract class AbstractExportView
             'message' => $message,
             'key' => $key
         );
+    }
+
+    /**
+     * @return DatabaseConnection
+     */
+    protected function getDatabaseConnection() {
+        return $GLOBALS['TYPO3_DB'];
     }
 }
