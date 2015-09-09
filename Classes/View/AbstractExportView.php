@@ -132,7 +132,7 @@ abstract class AbstractExportView
             foreach ($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['l10nmgr']['exportView'] as $classData) {
                 $postSaveProcessor = GeneralUtility::getUserObj($classData);
                 if ($postSaveProcessor instanceof PostSaveInterface) {
-                    $postInitializationProcessor->postExportAction($params);
+                    $postSaveProcessor->postExportAction($params);
                 }
             }
         }
