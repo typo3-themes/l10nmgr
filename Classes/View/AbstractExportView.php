@@ -124,12 +124,12 @@ abstract class AbstractExportView
 
         $res = $this->getDatabaseConnection()->exec_INSERTquery('tx_l10nmgr_exportdata', $field_values);
 
-        if (is_array($TYPO3_CONF_VARS['EXTCONF']['l10nmgr']['exportView'])) {
+        if (is_array($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['l10nmgr']['exportView'])) {
             $params = array(
                 'uid' => $this->getDatabaseConnection()->sql_insert_id(),
                 'data' => $field_values
             );
-            foreach ($TYPO3_CONF_VARS['EXTCONF']['l10nmgr']['exportView'] as $classData) {
+            foreach ($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['l10nmgr']['exportView'] as $classData) {
                 $postSaveProcessor = GeneralUtility::getUserObj($classData);
                 if ($postSaveProcessor instanceof PostSaveInterface) {
                     $postInitializationProcessor->postExportAction($params);
