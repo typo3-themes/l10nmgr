@@ -40,7 +40,7 @@ namespace Localizationteam\L10nmgr\Model\Tools;
  *  113:   function getRecordsToTranslateFromTable($table,$pageId)
  *  140:   function getSingleRecordToTranslate($table,$uid)
  *  169:   function translationDetails($table,$row,$sysLang,$flexFormDiff=array())
- *  282:   function translationDetails_flexFormCallBack($dsArr, $dataValue, $PA, $structurePath, &$pObj)
+ *  282:   function translationDetails_flexFormCallBack($dsArr, $dataValue, $PA, $structurePath, $pObj)
  *  329:   function translationDetails_addField($key, $TCEformsCfg, $dataValue, $translationValue, $diffDefaultValue='', $previewLanguageValues=array())
  *  372:   function indexDetailsRecord($table,$uid)
  *  393:   function indexDetailsPage($pageId)
@@ -118,10 +118,10 @@ class Tools
      * @param   string $dataValue Data value
      * @param   array $PA Various stuff in an array
      * @param   string $structurePath Path to location in flexform
-     * @param   object $pObj Reference to parent object
+     * @param   FlexFormTools $pObj parent object
      * @return  void
      */
-    function translationDetails_flexFormCallBack($dsArr, $dataValue, $PA, $structurePath, &$pObj)
+    function translationDetails_flexFormCallBack($dsArr, $dataValue, $PA, $structurePath, $pObj)
     {
 
         // Only take lead from default values (since this is "Inheritance" localization we parse for)
@@ -166,6 +166,7 @@ class Tools
             $this->translationDetails_addField($key, $dsArr['TCEforms'], $dataValue, $translValue, $diffDefaultValue,
                 $previewLanguageValues);
         }
+	    unset($pObj);
     }
 
     /**
@@ -290,10 +291,10 @@ class Tools
      * @param   string $dataValue Data value
      * @param   array $PA Various stuff in an array
      * @param   string $structurePath Path to location in flexform
-     * @param   object $pObj Reference to parent object
+     * @param   FlexFormTools $pObj parent object
      * @return  void
      */
-    function translationDetails_flexFormCallBackForOverlay($dsArr, $dataValue, $PA, $structurePath, &$pObj)
+    function translationDetails_flexFormCallBackForOverlay($dsArr, $dataValue, $PA, $structurePath, $pObj)
     {
 
         //echo $dataValue.'<hr>';
@@ -309,6 +310,7 @@ class Tools
         $key = $this->_callBackParams_keyForTranslationDetails . ':' . $structurePath;
         $this->translationDetails_addField($key, $dsArr['TCEforms'], $dataValue, $translValue, $diffDefaultValue,
             $previewLanguageValues, $this->_callBackParams_currentRow);
+	    unset($pObj);
     }
 
     /**
