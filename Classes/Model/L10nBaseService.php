@@ -262,6 +262,7 @@ class L10nBaseService
      */
     function _submitContentAsTranslatedLanguageAndGetFlexFormDiff($accum, $inputArray)
     {
+	    global $TCA;
         if (is_array($inputArray)) {
             // Initialize:
             /** @var $flexToolObj FlexFormTools */
@@ -296,21 +297,46 @@ class L10nBaseService
                                             $element = BackendUtility::getRecordRaw($table,
                                                 'uid = ' . $elementUid . ' AND deleted = 0');
                                             if ($element['colPos'] > -1) {
-                                                $TCEmain_cmd[$table][$elementUid]['localize'] = $Tlang;
+	                                            if (isset($TCEmain_cmd['tt_content'][$elementUid])) {
+		                                            unset($TCEmain_cmd['tt_content'][$elementUid]);
+	                                            }
+                                                $TCEmain_cmd['tt_content'][$elementUid]['localize'] = $Tlang;
                                             } else {
                                                 if ($element['tx_gridelements_container'] > 0) {
-//TYPO3\CMS\Core\Utility\DebugUtility::debug($element,'$element');
-                                                    $container = BackendUtility::getRecordRaw($table,
-                                                        'l18n_parent = ' . $element['tx_gridelements_container'] . ' AND deleted = 0 AND sys_language_uid = ' . $Tlang
+                                                    //TYPO3\CMS\Core\Utility\DebugUtility::debug($element,'$element');
+                                                    $container = BackendUtility::getRecordRaw('tt_content',
+	                                                    $TCA['tt_content']['ctrl']['transOrigPointerField'] . ' = ' . $element['tx_gridelements_container'] . '
+	                                                    AND deleted = 0 AND sys_language_uid = ' . $Tlang
                                                     );
                                                     if ($container['uid'] > 0) {
-                                                        $TCEmain_cmd[$table][$container['uid']]['inlineLocalizeSynchronize'] = 'tx_gridelements_children,localize';
+	                                                    if (isset($TCEmain_cmd['tt_content'][$elementUid])) {
+		                                                    unset($TCEmain_cmd['tt_content'][$elementUid]);
+	                                                    }
+                                                        $TCEmain_cmd['tt_content'][$container['uid']]['inlineLocalizeSynchronize'] = 'tx_gridelements_children,localize';
                                                     }
                                                 }
                                             }
+                                        } elseif ($table === 'sys_file_reference') {
+	                                        $element = BackendUtility::getRecordRaw($table,
+		                                        'uid = ' . $elementUid . ' AND deleted = 0');
+	                                        if ($element['uid_foreign'] && $element['tablenames'] && $element['fieldname']) {
+		                                        $parent = BackendUtility::getRecordRaw($element['tablenames'],
+			                                        $TCA[$element['tablenames']]['ctrl']['transOrigPointerField'] . ' = ' . $element['uid_foreign'] . '
+			                                        AND deleted = 0 AND sys_language_uid = ' . $Tlang
+		                                        );
+		                                        if ($parent['uid'] > 0) {
+			                                        if (isset($TCEmain_cmd[$element['tablenames']][$element['uid_foreign']])) {
+				                                        unset($TCEmain_cmd[$element['tablenames']][$element['uid_foreign']]);
+			                                        }
+			                                        $TCEmain_cmd[$element['tablenames']][$element['uid_foreign']]['inlineLocalizeSynchronize'] = $element['fieldname'] . ',localize';
+		                                        }
+	                                        }
                                         } else {
-                                            //print "\nNEW\n";
-                                            $TCEmain_cmd[$table][$elementUid]['localize'] = $Tlang;
+		                                    //print "\nNEW\n";
+	                                        if (isset($TCEmain_cmd[$table][$elementUid])) {
+		                                        unset($TCEmain_cmd[$table][$elementUid]);
+	                                        }
+		                                    $TCEmain_cmd[$table][$elementUid]['localize'] = $Tlang;
                                         }
                                     }
 
@@ -346,8 +372,8 @@ class L10nBaseService
                     }
                 }
             }
-//TYPO3\CMS\Core\Utility\DebugUtility::debug($TCEmain_cmd,'$TCEmain_cmd');
-//TYPO3\CMS\Core\Utility\DebugUtility::debug($TCEmain_data,'$TCEmain_data');
+			//\TYPO3\CMS\Core\Utility\DebugUtility::debug($TCEmain_cmd,'$TCEmain_cmd');
+			//\TYPO3\CMS\Core\Utility\DebugUtility::debug($TCEmain_data,'$TCEmain_data');
 
             self::$targetLanguageID = $Tlang;
 
