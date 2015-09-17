@@ -664,7 +664,7 @@ class Tools
     protected function _getFlexFormMetaDataForContentElement($table, $field, $row)
     {
         $conf = $GLOBALS['TCA'][$table]['columns'][$field]['config'];
-        $dataStructArray = BackendUtility::getFlexFormDS($conf, $row, $table);
+        $dataStructArray = BackendUtility::getFlexFormDS($conf, $row, $table, $field);
         if (is_array($dataStructArray)) {
             return $dataStructArray;
         }

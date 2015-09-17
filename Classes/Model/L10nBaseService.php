@@ -25,7 +25,6 @@ namespace Localizationteam\L10nmgr\Model;
  ***************************************************************/
 use TYPO3\CMS\Core\Configuration\FlexForm\FlexFormTools;
 use TYPO3\CMS\Core\DataHandling\DataHandler;
-use TYPO3\CMS\Core\Utility\DebugUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
@@ -408,26 +407,22 @@ class L10nBaseService
             $this->lastTCEMAINCommandsCount = 0;
             foreach ($TCEmain_data as $table => $items) {
                 foreach ($TCEmain_data[$table] as $TuidString => $fields) {
+	                if($table === 'sys_file_reference' && $fields['tablenames'] === 'pages') {
+		                $parent = BackendUtility::getRecordRaw('pages_language_overlay',
+			                'pid = ' . $element['uid_foreign'] . '
+			                AND deleted = 0 AND sys_language_uid = ' . $Tlang
+		                );
+		                if($parent['uid'] Y ) {
+			                $fields['tablenames'] = 'pages_language_overlay';
+			                $fields['uid_foreign'] = $parent['uid'];
+		                }
+	                }
                     list($Tuid, $Tlang, $TdefRecord) = explode('/', $TuidString);
                     $this->lastTCEMAINCommandsCount++;
                     if ($Tuid === 'NEW') {
                         if ($tce->copyMappingArray_merged[$table][$TdefRecord]) {
-	                        $mappedUid = BackendUtility::wsMapId($table, $tce->copyMappingArray_merged[$table][$TdefRecord]);
-	                        if($table === 'sys_file_reference' && $fields['tablenames'] === 'pages') {
-		                        $element = BackendUtility::getRecordRaw($table,
-			                        'uid = ' . $mappedUid . ' AND deleted = 0');
-		                        if ($element['uid_foreign'] && $element['tablenames']) {
-			                        $parent = BackendUtility::getRecordRaw('pages_language_overlay',
-				                        'pid = ' . $element['uid_foreign'] . '
-				                        AND deleted = 0 AND sys_language_uid = ' . $Tlang
-			                        );
-			                        if ($parent['uid'] > 0) {
-				                        $fields['tablenames'] = 'pages_language_overlay';
-				                        $fields['uid_foreign'] = $parent['uid'];
-			                        }
-		                        }
-	                        }
-                            $TCEmain_data[$table][$mappedUid] = $fields;
+                            $TCEmain_data[$table][BackendUtility::wsMapId($table,
+                                $tce->copyMappingArray_merged[$table][$TdefRecord])] = $fields;
                         } else {
                             GeneralUtility::sysLog(__FILE__ . ': ' . __LINE__ . ': Record "' . $table . ':' . $TdefRecord . '" was NOT localized as it should have been!',
                                 'l10nmgr');
