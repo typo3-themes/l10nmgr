@@ -104,12 +104,9 @@ abstract class AbstractExportView
         // get current date
         $date = time();
 
-        //To-Do get source language if another than default is selected
-        $sourceLanguageId = 0;
-
         // query to insert the data in the database
         $field_values = array(
-            'source_lang' => $sourceLanguageId,
+            'source_lang' => $this->forcedSourceLanguage,
             'translation_lang' => $this->sysLang,
             'crdate' => $date,
             'tstamp' => $date,
