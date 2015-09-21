@@ -412,7 +412,7 @@ class L10nBaseService
 			                'pid = ' . $element['uid_foreign'] . '
 			                AND deleted = 0 AND sys_language_uid = ' . $Tlang
 		                );
-		                if($parent['uid'] Y ) {
+		                if($parent['uid']) {
 			                $fields['tablenames'] = 'pages_language_overlay';
 			                $fields['uid_foreign'] = $parent['uid'];
 		                }
