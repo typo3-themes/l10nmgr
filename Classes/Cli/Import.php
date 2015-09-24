@@ -30,6 +30,7 @@ if (!defined('TYPO3_cliMode')) {
 }
 
 use TYPO3\CMS\Core\Controller\CommandLineController;
+use TYPO3\CMS\Core\Exception;
 use TYPO3\CMS\Core\Mail\MailMessage;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use Localizationteam\L10nmgr\Model\L10nConfiguration;
@@ -278,7 +279,7 @@ class Import extends CommandLineController
 	 * Get workspace ID from XML (quick & dirty)
 	 * @param string $xml XML string to parse
 	 * @return int ID of the workspace to import to
-	 * @throws \Localizationteam\L10nmgr\Cli\Exception
+	 * @throws \TYPO3\CMS\Core\Exception
 	 */
     protected function getWsIdFromCATXML($xml)
     {
@@ -670,15 +671,14 @@ class Import extends CommandLineController
 	 * Extracts the header of a CATXML file
 	 * @param string $filepath Path to the file
 	 * @return bool
-	 * @throws \Localizationteam\L10nmgr\Cli\Exception
-	 * @throws \Localizationteam\L10nmgr\Cli\RuntimeException
+	 * @throws \TYPO3\CMS\Core\Exception
 	 */
     protected function getXMLFileHead($filepath)
     {
         $getURLReport = array();
         $fileContent = GeneralUtility::getUrl($filepath, 0, false, $getURLReport);
         if ($getURLReport['error']) {
-            throw new RuntimeException(
+            throw new Exception(
                 "File or URL cannot be read.\n  \\TYPO3\\CMS\\Core\\Utility\\GeneralUtility::getURL() error code: " . $getURLReport['error'] . "\n  \\TYPO3\\CMS\\Core\\Utility\\GeneralUtility::getURL() message: “" . $getURLReport['message'] . '”',
                 1390394945
             );
