@@ -197,7 +197,8 @@ Traversing page tree and building an index of translation needs
 
             if (!$versionSwapmode) {
                 // Init:
-                $t8Tools = GeneralUtility::makeInstance(Tools::class);
+	            /* @var $t8Tools Tools */
+                $t8Tools = GeneralUtility::makeInstance('\Localizationteam\L10nmgr\Model\Tools\Tools');
                 $t8Tools->verbose = false; // Otherwise it will show records which has fields but none editable.
                 $t8Tools->bypassFilter = $this->cli_isArg('--bypassFilter') ? true : false;
 
@@ -229,7 +230,8 @@ Traversing page tree and building an index of translation needs
     function main_autoFix($resultArray)
     {
         // Init:
-        $t8Tools = GeneralUtility::makeInstance(Tools::class);
+	    /* @var $t8Tools Tools */
+        $t8Tools = GeneralUtility::makeInstance('\Localizationteam\L10nmgr\Model\Tools\Tools');
         $t8Tools->verbose = false; // Otherwise it will show records which has fields but none editable.
 
         if (!$this->cli_isArg('--noFlush')) {
