@@ -9,12 +9,12 @@ if (!defined('TYPO3_MODE')) {
 
 if (TYPO3_MODE == 'BE') {
     // Setting up scripts that can be run from the cli_dispatch.phpsh script.
-    $TYPO3_CONF_VARS['SC_OPTIONS']['GLOBAL']['cliKeys']['l10nmgr_import'] = array(
-        'EXT:' . $_EXTKEY . 'Classes/Cli/Import.php',
+    $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['GLOBAL']['cliKeys']['l10nmgr_import'] = array(
+        'EXT:' . $_EXTKEY . '/Classes/Cli/Import.php',
         '_CLI_user'
     );
-    $TYPO3_CONF_VARS['SC_OPTIONS']['GLOBAL']['cliKeys']['l10nmgr_export'] = array(
-        'EXT:' . $_EXTKEY . 'Classes/Cli/Export.php',
+	$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['GLOBAL']['cliKeys']['l10nmgr_export'] = array(
+        'EXT:' . $_EXTKEY . '/Classes/Cli/Export.php',
         '_CLI_user'
     );
 }
@@ -37,4 +37,3 @@ $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['scheduler']['tasks']['Localizationman
     'description' => 'LLL:EXT:' . $_EXTKEY . 'Resources/Private/Language/Task/locallang.xml:fileGarbageCollection.description',
     'additionalFields' => 'LocalizationmanagerFileGarbageCollectionAdditionalFieldProvider',
 );
-?>

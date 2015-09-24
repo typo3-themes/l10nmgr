@@ -29,6 +29,7 @@ if (!defined('TYPO3_cliMode')) {
     die('You cannot run this script directly!');
 }
 
+use TYPO3\CMS\Core\Controller\CommandLineController;
 use TYPO3\CMS\Core\Mail\MailMessage;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use Localizationteam\L10nmgr\Model\L10nConfiguration;
@@ -38,8 +39,13 @@ use Localizationteam\L10nmgr\Model\TranslationDataFactory;
 use Localizationteam\L10nmgr\Model\CatXmlImportManager;
 use Localizationteam\L10nmgr\Model\MkPreviewLinkService;
 use Localizationteam\L10nmgr\Zip;
+use \TYPO3\CMS\Lang\LanguageService;
 
-$LANG->includeLLFile('EXT:l10nmgr/Resources/Private/Language/Cli/locallang.xml');
+// Load language support
+/* @var $lang LanguageService*/
+$lang = GeneralUtility::makeInstance('\TYPO3\CMS\Lang\LanguageService');
+$fileRef = 'EXT:l10nmgr/Resources/Private/Language/Cli/locallang.xml';
+$lang->includeLLFile($fileRef);
 
 /**
  * Class for handling import of translations from the command-line
@@ -49,7 +55,7 @@ $LANG->includeLLFile('EXT:l10nmgr/Resources/Private/Language/Cli/locallang.xml')
  * @package TYPO3
  * @subpackage tx_l10nmgr
  */
-class Import extends \TYPO3\CMS\Core\Controller\CommandLineController
+class Import extends CommandLineController
 {
 
     /**
@@ -268,12 +274,12 @@ class Import extends \TYPO3\CMS\Core\Controller\CommandLineController
         $this->callParameters['importAsDefaultLanguage'] = $importAsDefaultLanguage;
     }
 
-    /**
-     * Get workspace ID from XML (quick & dirty)
-     *
-     * @param string $xml XML string to parse
-     * @return integer ID of the workspace to import to
-     */
+	/**
+	 * Get workspace ID from XML (quick & dirty)
+	 * @param string $xml XML string to parse
+	 * @return int ID of the workspace to import to
+	 * @throws \Localizationteam\L10nmgr\Cli\Exception
+	 */
     protected function getWsIdFromCATXML($xml)
     {
         preg_match('/<t3_workspaceId>([^<]+)/', $xml, $matches);
@@ -297,15 +303,15 @@ class Import extends \TYPO3\CMS\Core\Controller\CommandLineController
         $error = '';
 
         /** @var $service L10nBaseService */
-        $service = GeneralUtility::makeInstance(L10nBaseService::class);
+        $service = GeneralUtility::makeInstance('\Localizationteam\L10nmgr\Model\L10nBaseService');
         if ($this->callParameters['importAsDefaultLanguage']) {
             $service->setImportAsDefaultLanguage(true);
         }
         /** @var $factory TranslationDataFactory */
-        $factory = GeneralUtility::makeInstance(TranslationDataFactory::class);
+        $factory = GeneralUtility::makeInstance('\Localizationteam\L10nmgr\Model\TranslationDataFactory');
 
         /** @var $importManager CatXmlImportManager */
-        $importManager = GeneralUtility::makeInstance(CatXmlImportManager::class, '',
+        $importManager = GeneralUtility::makeInstance('\Localizationteam\L10nmgr\Model\CatXmlImportManager', '',
             $this->sysLanguage,
             $this->callParameters['string']);
 
@@ -321,7 +327,7 @@ class Import extends \TYPO3\CMS\Core\Controller\CommandLineController
 
             // Find l10n configuration record
             /** @var $l10ncfgObj L10nConfiguration */
-            $l10ncfgObj = GeneralUtility::makeInstance(L10nConfiguration::class);
+            $l10ncfgObj = GeneralUtility::makeInstance('\Localizationteam\L10nmgr\Model\L10nConfiguration');
             $l10ncfgObj->load($importManager->headerData['t3_l10ncfg']);
             $status = $l10ncfgObj->isLoaded();
             if ($status === false) {
@@ -344,7 +350,7 @@ class Import extends \TYPO3\CMS\Core\Controller\CommandLineController
                     $pageIds[0] = $importManager->headerData['t3_previewId'];
                 }
                 /** @var $mkPreviewLinks MkPreviewLinkService */
-                $mkPreviewLinks = GeneralUtility::makeInstance(MkPreviewLinkService::class,
+                $mkPreviewLinks = GeneralUtility::makeInstance('\Localizationteam\L10nmgr\Model\MkPreviewLinkService',
                     $importManager->headerData['t3_workspaceId'], $importManager->headerData['t3_sysLang'], $pageIds);
                 $previewLink = $mkPreviewLinks->mkSinglePreviewLink($importManager->headerData['t3_baseURL'],
                     $this->callParameters['server']);
@@ -377,7 +383,7 @@ class Import extends \TYPO3\CMS\Core\Controller\CommandLineController
         $error = '';
 
         /** @var $importManager CatXmlImportManager */
-        $importManager = GeneralUtility::makeInstance(CatXmlImportManager::class, '',
+        $importManager = GeneralUtility::makeInstance('\Localizationteam\L10nmgr\Model\CatXmlImportManager', '',
             $this->sysLanguage,
             $this->callParameters['string']);
 
@@ -391,7 +397,7 @@ class Import extends \TYPO3\CMS\Core\Controller\CommandLineController
         } else {
             $pageIds = $importManager->getPidsFromCATXMLNodes($importManager->xmlNodes);
             /** @var $mkPreviewLinks MkPreviewLinkService */
-            $mkPreviewLinks = GeneralUtility::makeInstance(MkPreviewLinkService::class,
+            $mkPreviewLinks = GeneralUtility::makeInstance('\Localizationteam\L10nmgr\Model\MkPreviewLinkService',
                 $importManager->headerData['t3_workspaceId'], $importManager->headerData['t3_sysLang'], $pageIds);
             //Only valid if source language = default language (id=0)
             $previewLink = $mkPreviewLinks->mkSingleSrcPreviewLink($importManager->headerData['t3_baseURL'], 0);
@@ -428,16 +434,16 @@ class Import extends \TYPO3\CMS\Core\Controller\CommandLineController
                     $this->sysLanguage = $xmlFileHead['t3_sysLang'][0]['XMLvalue'];
 
                     /** @var $service L10nBaseService */
-                    $service = GeneralUtility::makeInstance(L10nBaseService::class);
+                    $service = GeneralUtility::makeInstance('\Localizationteam\L10nmgr\Model\L10nBaseService');
                     if ($this->callParameters['importAsDefaultLanguage']) {
                         $service->setImportAsDefaultLanguage(true);
                     }
                     /** @var $factory TranslationDataFactory */
-                    $factory = GeneralUtility::makeInstance(TranslationDataFactory::class);
+                    $factory = GeneralUtility::makeInstance('\Localizationteam\L10nmgr\Model\TranslationDataFactory');
 
                     // Relevant processing of XML Import with the help of the Importmanager
                     /** @var $importManager CatXmlImportManager */
-                    $importManager = GeneralUtility::makeInstance(CatXmlImportManager::class,
+                    $importManager = GeneralUtility::makeInstance('\Localizationteam\L10nmgr\Model\CatXmlImportManager',
                         $xmlFile,
                         $this->sysLanguage, '');
                     if ($importManager->parseAndCheckXMLFile() === false) {
@@ -445,7 +451,7 @@ class Import extends \TYPO3\CMS\Core\Controller\CommandLineController
                     } else {
                         // Find l10n configuration record
                         /** @var $l10ncfgObj L10nConfiguration */
-                        $l10ncfgObj = GeneralUtility::makeInstance(L10nConfiguration::class);
+                        $l10ncfgObj = GeneralUtility::makeInstance('\Localizationteam\L10nmgr\Model\L10nConfiguration');
                         $l10ncfgObj->load($importManager->headerData['t3_l10ncfg']);
                         $status = $l10ncfgObj->isLoaded();
                         if ($status === false) {
@@ -464,7 +470,7 @@ class Import extends \TYPO3\CMS\Core\Controller\CommandLineController
                                 $pageIds[0] = $importManager->headerData['t3_previewId'];
                             }
                             /** @var $mkPreviewLinks MkPreviewLinkService */
-                            $mkPreviewLinks = GeneralUtility::makeInstance(MkPreviewLinkService::class,
+                            $mkPreviewLinks = GeneralUtility::makeInstance('\Localizationteam\L10nmgr\Model\MkPreviewLinkService',
                                 $importManager->headerData['t3_workspaceId'], $importManager->headerData['t3_sysLang'],
                                 $pageIds);
                             $previewLink = $mkPreviewLinks->mkSinglePreviewLink($importManager->headerData['t3_baseURL'],
@@ -541,7 +547,7 @@ class Import extends \TYPO3\CMS\Core\Controller\CommandLineController
             // Unzip file if *.zip
             if ($fileInformation['extension'] == 'zip') {
                 /** @var $unzip Zip */
-                $unzip = GeneralUtility::makeInstance(Zip::class);
+                $unzip = GeneralUtility::makeInstance('\Localizationteam\L10nmgr\Zip');
                 $unzipResource = $unzip->extractFile($this->callParameters['file']);
 
                 // Process extracted files if file type = xml => IMPORT
@@ -607,7 +613,7 @@ class Import extends \TYPO3\CMS\Core\Controller\CommandLineController
                                         $files[] = $savePath;
                                     } else {
                                         /** @var $unzip Zip */
-                                        $unzip = GeneralUtility::makeInstance(Zip::class);
+                                        $unzip = GeneralUtility::makeInstance('\Localizationteam\L10nmgr\Zip');
                                         $unzipResource = $unzip->extractFile($savePath);
 
                                         // Process extracted files if file type = xml => IMPORT
@@ -660,20 +666,20 @@ class Import extends \TYPO3\CMS\Core\Controller\CommandLineController
         return $passed;
     }
 
-    /**
-     * Extracts the header of a CATXML file
-     *
-     * @param string $filepath Path to the file
-     * @return bool
-     * @throws RuntimeException
-     */
+	/**
+	 * Extracts the header of a CATXML file
+	 * @param string $filepath Path to the file
+	 * @return bool
+	 * @throws \Localizationteam\L10nmgr\Cli\Exception
+	 * @throws \Localizationteam\L10nmgr\Cli\RuntimeException
+	 */
     protected function getXMLFileHead($filepath)
     {
         $getURLReport = array();
         $fileContent = GeneralUtility::getUrl($filepath, 0, false, $getURLReport);
         if ($getURLReport['error']) {
             throw new RuntimeException(
-                "File or URL cannot be read.\n  \TYPO3\CMS\Core\Utility\GeneralUtility::getURL() error code: " . $getURLReport['error'] . "\n  \TYPO3\CMS\Core\Utility\GeneralUtility::getURL() message: “" . $getURLReport['message'] . '”',
+                "File or URL cannot be read.\n  \\TYPO3\\CMS\\Core\\Utility\\GeneralUtility::getURL() error code: " . $getURLReport['error'] . "\n  \\TYPO3\\CMS\\Core\\Utility\\GeneralUtility::getURL() message: “" . $getURLReport['message'] . '”',
                 1390394945
             );
         }
@@ -704,7 +710,7 @@ class Import extends \TYPO3\CMS\Core\Controller\CommandLineController
         // Clean up directory into which ZIP archives were uncompressed, if any
         if (!empty($this->directoryToCleanUp)) {
             /** @var $unzip Zip */
-            $unzip = GeneralUtility::makeInstance(Zip::class);
+            $unzip = GeneralUtility::makeInstance('\Localizationteam\L10nmgr\Zip');
             $unzip->removeDir($this->directoryToCleanUp);
         }
     }
@@ -787,7 +793,7 @@ class Import extends \TYPO3\CMS\Core\Controller\CommandLineController
 
                 // Instantiate the mail object, set all necessary properties and send the mail
                 /** @var $mailObject MailMessage */
-                $mailObject = GeneralUtility::makeInstance(MailMessage::class);
+                $mailObject = GeneralUtility::makeInstance('\TYPO3\CMS\Core\Mail\MailMessage');
                 $mailObject->setFrom(array($this->extensionConfiguration['email_sender'] => $this->extensionConfiguration['email_sender_name']));
                 $mailObject->setTo($recipients);
                 $mailObject->setSubject($subject);
@@ -801,5 +807,5 @@ class Import extends \TYPO3\CMS\Core\Controller\CommandLineController
 
 // Call the functionality
 /** @var $importObject Import */
-$importObject = GeneralUtility::makeInstance(Import::class);
+$importObject = GeneralUtility::makeInstance('\Localizationteam\L10nmgr\Cli\Import');
 $importObject->cli_main($_SERVER['argv']);

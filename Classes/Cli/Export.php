@@ -12,34 +12,26 @@ namespace Localizationteam\L10nmgr\Cli;
  */
 
 use TYPO3\CMS\Backend\Utility\BackendUtility;
+use TYPO3\CMS\Core\Controller\CommandLineController;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
-use TYPO3\CMS\Lang\Controller\LanguageController;
+use \TYPO3\CMS\Lang\LanguageService;
+use Localizationteam\L10nmgr\View\ExcelXmlView;
+use Localizationteam\L10nmgr\View\CatXmlView;
+use Localizationteam\L10nmgr\Model\L10nConfiguration;
 
 if (!defined('TYPO3_cliMode')) {
     die('You cannot run this script directly!');
 }
 
 // Load language support
-$lang = GeneralUtility::makeInstance(LanguageController::class);
+/* @var $lang LanguageService*/
+$lang = GeneralUtility::makeInstance('\TYPO3\CMS\Lang\LanguageService');
 $fileRef = 'EXT:l10nmgr/Resources/Private/Language/Cli/locallang.xml';
 $lang->includeLLFile($fileRef);
 
-$extPath = ExtensionManagementUtility::extPath('l10nmgr');
-
-use Localizationteam\L10nmgr\View\L10nConfigurationDetailView;
-use Localizationteam\L10nmgr\View\L10nHtmlListView;
-use Localizationteam\L10nmgr\View\ExcelXmlView;
-use Localizationteam\L10nmgr\View\CatXmlView;
-use Localizationteam\L10nmgr\View\AbstractExportView;
-
-use Localizationteam\L10nmgr\Model\L10nConfiguration;
-use Localizationteam\L10nmgr\Model\L10nBaseService;
-use Localizationteam\L10nmgr\Model\TranslationData;
-use Localizationteam\L10nmgr\Model\TranslationDataFactory;
-
-class Export extends \TYPO3\CMS\Core\Controller\CommandLineController
+class Export extends CommandLineController
 {
 
     /**
@@ -239,12 +231,12 @@ class Export extends \TYPO3\CMS\Core\Controller\CommandLineController
         $this->loadExtConf();
 
         /** @var $l10nmgrCfgObj L10nConfiguration */
-        $l10nmgrCfgObj = GeneralUtility::makeInstance(L10nConfiguration::class);
+        $l10nmgrCfgObj = GeneralUtility::makeInstance('\Localizationteam\L10nmgr\Model\L10nConfiguration');
         $l10nmgrCfgObj->load($l10ncfg);
         if ($l10nmgrCfgObj->isLoaded()) {
 
             /** @var $l10nmgrGetXML CatXmlView */
-            $l10nmgrGetXML = GeneralUtility::makeInstance(CatXmlView::class,
+            $l10nmgrGetXML = GeneralUtility::makeInstance('\Localizationteam\L10nmgr\View\CatXmlView',
                 $l10nmgrCfgObj, $tlang);
 
             // Check if sourceLangStaticId is set in configuration and set setForcedSourceLanguage to this value
@@ -283,7 +275,8 @@ class Export extends \TYPO3\CMS\Core\Controller\CommandLineController
                     if (empty($this->lConf['email_recipient'])) {
                         $this->cli_echo($lang->getLL('error.email.repient_missing.msg') . "\n");
                     } else {
-                        $this->emailNotification($xmlFileName, $l10nmgrCfgObj, $tlang);
+	                    // ToDo: make email configuration run again
+                        // $this->emailNotification($xmlFileName, $l10nmgrCfgObj, $tlang);
                     }
                 } else {
                     $this->cli_echo($lang->getLL('error.email.notification_disabled.msg') . "\n");
@@ -432,12 +425,12 @@ class Export extends \TYPO3\CMS\Core\Controller\CommandLineController
         $this->loadExtConf();
 
         /** @var $l10nmgrCfgObj L10nConfiguration */
-        $l10nmgrCfgObj = GeneralUtility::makeInstance(L10nConfiguration::class);
+        $l10nmgrCfgObj = GeneralUtility::makeInstance('\Localizationteam\L10nmgr\Model\L10nConfiguration');
         $l10nmgrCfgObj->load($l10ncfg);
         if ($l10nmgrCfgObj->isLoaded()) {
 
             /** @var $l10nmgrGetXML ExcelXmlView */
-            $l10nmgrGetXML = GeneralUtility::makeInstance(ExcelXmlView::class,
+            $l10nmgrGetXML = GeneralUtility::makeInstance('\Localizationteam\L10nmgr\View\ExcelXmlView',
                 $l10nmgrCfgObj, $tlang);
 
             // Check if sourceLangStaticId is set in configuration and set setForcedSourceLanguage to this value
@@ -507,5 +500,5 @@ class Export extends \TYPO3\CMS\Core\Controller\CommandLineController
 
 // Call the functionality
 /** @var $cleanerObj Export */
-$cleanerObj = GeneralUtility::makeInstance(Export::class);
+$cleanerObj = GeneralUtility::makeInstance('\Localizationteam\L10nmgr\Cli\Export');
 $cleanerObj->cli_main($_SERVER['argv']);
