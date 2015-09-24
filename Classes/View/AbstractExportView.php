@@ -106,7 +106,7 @@ abstract class AbstractExportView
 
         // query to insert the data in the database
         $field_values = array(
-            'source_lang' => $this->forcedSourceLanguage,
+            'source_lang' => $this->forcedSourceLanguage ? $this->forcedSourceLanguage : 0,
             'translation_lang' => $this->sysLang,
             'crdate' => $date,
             'tstamp' => $date,
