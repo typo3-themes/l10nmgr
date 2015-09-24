@@ -16,7 +16,7 @@ use TYPO3\CMS\Core\Controller\CommandLineController;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
-use \TYPO3\CMS\Lang\LanguageService;
+use TYPO3\CMS\Lang\LanguageService;
 use Localizationteam\L10nmgr\View\ExcelXmlView;
 use Localizationteam\L10nmgr\View\CatXmlView;
 use Localizationteam\L10nmgr\Model\L10nConfiguration;

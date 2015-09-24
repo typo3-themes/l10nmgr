@@ -39,7 +39,7 @@ use Localizationteam\L10nmgr\Model\TranslationDataFactory;
 use Localizationteam\L10nmgr\Model\CatXmlImportManager;
 use Localizationteam\L10nmgr\Model\MkPreviewLinkService;
 use Localizationteam\L10nmgr\Zip;
-use \TYPO3\CMS\Lang\LanguageService;
+use TYPO3\CMS\Lang\LanguageService;
 
 // Load language support
 /* @var $lang LanguageService*/
