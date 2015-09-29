@@ -297,7 +297,7 @@ class CatXmlImportManager
             $where .= "= $elementUid AND sys_language_uid = " . $this->headerData['t3_sysLang'] . " AND t3ver_wsid = " . $this->headerData['t3_workspaceId'];
             if ($table == 'pages') {
                 $table = 'pages_language_overlay';
-                $where = "pid = $elementUid AND sys_language_uid = " . $this->headerData['t3_sysLang'] . " AND t3ver_wsid = " . $this->headerData['t3_workspaceId'];
+                $where = 'pid = ' . (int)$elementUid  . ' AND sys_language_uid = ' . (int)$this->headerData['t3_sysLang'] . ' AND t3ver_wsid = ' . (int)$this->headerData['t3_workspaceId'];
             }
             $delDataQuery = $GLOBALS['TYPO3_DB']->exec_DELETEquery($table, $where);
             $cmdCount++;

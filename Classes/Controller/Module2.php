@@ -62,7 +62,7 @@ class Module2
         $width = $this->defaultWidth;
 
         // THis onload handler is a bug-fix for a possible bug in Safari browser for Mac. Posted by Jack COLE. Should not influence other browsers negatively.
-        $onLoadHandler = ' onload="if(top.content.nav_frame.location.href.length == 1) {top.content.nav_frame.location=\'' . $URL_nav . '\';};"';
+        $onLoadHandler = ' onload="if (top.content.nav_frame.location.href.length == 1) {top.content.nav_frame.location=\'' . $URL_nav . '\';};"';
 
         $this->content .= '
 			<frameset cols="' . $width . ',*"' . $onLoadHandler . '>

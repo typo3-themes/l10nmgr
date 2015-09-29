@@ -169,7 +169,7 @@ class Module2List extends BaseScriptClass
                 $cells = '';
 				$rec_on = array();
                 // Get CURRENT online record and icon based on "t3ver_oid":
-	            if($el[0] !== '' && $el[1] > 0) {
+	            if ($el[0] !== '' && $el[1] > 0) {
 		            $rec_on = BackendUtility::getRecord($el[0], $el[1]);
 	            }
                 $icon = IconUtility::getSpriteIconForRecord($el[0], $rec_on);

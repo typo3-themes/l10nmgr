@@ -25,6 +25,7 @@ namespace Localizationteam\L10nmgr\Model;
  ***************************************************************/
 use TYPO3\CMS\Core\Configuration\FlexForm\FlexFormTools;
 use TYPO3\CMS\Core\DataHandling\DataHandler;
+use TYPO3\CMS\Core\Utility\DebugUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
@@ -295,7 +296,7 @@ class L10nBaseService
                                     if ($Tuid === 'NEW') {
                                         if ($table === 'tt_content' && $gridElementsInstalled === true) {
                                             $element = BackendUtility::getRecordRaw($table,
-                                                'uid = ' . $elementUid . ' AND deleted = 0');
+                                                'uid = ' . (int)$elementUid . ' AND deleted = 0');
                                             if ($element['colPos'] > -1) {
 	                                            if (isset($TCEmain_cmd['tt_content'][$elementUid])) {
 		                                            unset($TCEmain_cmd['tt_content'][$elementUid]);
@@ -305,8 +306,8 @@ class L10nBaseService
                                                 if ($element['tx_gridelements_container'] > 0) {
                                                     //TYPO3\CMS\Core\Utility\DebugUtility::debug($element,'$element');
                                                     $container = BackendUtility::getRecordRaw('tt_content',
-	                                                    $TCA['tt_content']['ctrl']['transOrigPointerField'] . ' = ' . $element['tx_gridelements_container'] . '
-	                                                    AND deleted = 0 AND sys_language_uid = ' . $Tlang
+	                                                    $TCA['tt_content']['ctrl']['transOrigPointerField'] . ' = ' . (int)$element['tx_gridelements_container'] . '
+	                                                    AND deleted = 0 AND sys_language_uid = ' . (int)$Tlang
                                                     );
                                                     if ($container['uid'] > 0) {
 	                                                    if (isset($TCEmain_cmd['tt_content'][$elementUid])) {
@@ -318,17 +319,17 @@ class L10nBaseService
                                             }
                                         } elseif ($table === 'sys_file_reference') {
 	                                        $element = BackendUtility::getRecordRaw($table,
-		                                        'uid = ' . $elementUid . ' AND deleted = 0');
+		                                        'uid = ' . (int)$elementUid . ' AND deleted = 0');
 	                                        if ($element['uid_foreign'] && $element['tablenames'] && $element['fieldname']) {
-		                                        if($element['tablenames'] === 'pages') {
+		                                        if ($element['tablenames'] === 'pages') {
 			                                        if (isset($TCEmain_cmd[$table][$elementUid])) {
 				                                        unset($TCEmain_cmd[$table][$elementUid]);
 			                                        }
 		                                            $TCEmain_cmd[$table][$elementUid]['localize'] = $Tlang;
 		                                        } else {
 			                                        $parent = BackendUtility::getRecordRaw($element['tablenames'],
-				                                        $TCA[$element['tablenames']]['ctrl']['transOrigPointerField'] . ' = ' . $element['uid_foreign'] . '
-			                                            AND deleted = 0 AND sys_language_uid = ' . $Tlang
+				                                        $TCA[$element['tablenames']]['ctrl']['transOrigPointerField'] . ' = ' . (int)$element['uid_foreign'] . '
+			                                            AND deleted = 0 AND sys_language_uid = ' . (int)$Tlang
 			                                        );
 			                                        if ($parent['uid'] > 0) {
 				                                        if (isset($TCEmain_cmd[$element['tablenames']][$element['uid_foreign']])) {
@@ -407,12 +408,12 @@ class L10nBaseService
             $this->lastTCEMAINCommandsCount = 0;
             foreach ($TCEmain_data as $table => $items) {
                 foreach ($TCEmain_data[$table] as $TuidString => $fields) {
-	                if($table === 'sys_file_reference' && $fields['tablenames'] === 'pages') {
+	                if ($table === 'sys_file_reference' && $fields['tablenames'] === 'pages') {
 		                $parent = BackendUtility::getRecordRaw('pages_language_overlay',
-			                'pid = ' . $element['uid_foreign'] . '
-			                AND deleted = 0 AND sys_language_uid = ' . $Tlang
+			                'pid = ' . (int)$element['uid_foreign'] . '
+			                AND deleted = 0 AND sys_language_uid = ' . (int)$Tlang
 		                );
-		                if($parent['uid']) {
+		                if ($parent['uid']) {
 			                $fields['tablenames'] = 'pages_language_overlay';
 			                $fields['uid_foreign'] = $parent['uid'];
 		                }

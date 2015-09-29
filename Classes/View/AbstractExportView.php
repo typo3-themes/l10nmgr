@@ -212,7 +212,7 @@ abstract class AbstractExportView
         $res = $this->getDatabaseConnection()->exec_SELECTquery(
             'l10ncfg_id,exportType,translation_lang',
             'tx_l10nmgr_exportdata',
-            'l10ncfg_id =' . $this->l10ncfgObj->getData('uid') . ' AND exportType = ' . $this->exportType . ' AND translation_lang = ' . $this->sysLang
+            'l10ncfg_id =' . (int)$this->l10ncfgObj->getData('uid') . ' AND exportType = ' . $this->exportType . ' AND translation_lang = ' . $this->sysLang
         );
         if (!$this->getDatabaseConnection()->sql_error()) {
             $numRows = $this->getDatabaseConnection()->sql_num_rows($res);
@@ -301,7 +301,7 @@ abstract class AbstractExportView
         $res = $this->getDatabaseConnection()->exec_SELECTgetRows(
             'crdate,l10ncfg_id,exportType,translation_lang,filename',
             'tx_l10nmgr_exportdata',
-            'l10ncfg_id = ' . $this->l10ncfgObj->getData('uid') . ' AND exportType = ' . $this->exportType . ' AND translation_lang = ' . $this->sysLang,
+            'l10ncfg_id = ' . (int)$this->l10ncfgObj->getData('uid') . ' AND exportType = ' . $this->exportType . ' AND translation_lang = ' . $this->sysLang,
             '',
             'crdate DESC'
         );

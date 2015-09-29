@@ -48,7 +48,7 @@ function highlighttab(aobject) {
  */
 function collectddtabs() {
 	var tabobj = document.getElementById('ddtabs')
-	if(typeof tabobj != 'undefined' && tabobj) {
+	if (typeof tabobj != 'undefined' && tabobj) {
 		tabobjlinks = tabobj.getElementsByTagName('A')
 	}
 }
@@ -60,7 +60,7 @@ function collectddtabs() {
  */
 function do_onload() {
 	collectddtabs()
-	if(typeof tabobjlinks != 'undefined' && tabobjlinks) {
+	if (typeof tabobjlinks != 'undefined' && tabobjlinks) {
 		expandcontent(initialtab[1], tabobjlinks[initialtab[0] - 1])
 	}
 }

@@ -77,7 +77,7 @@ class LocalizationmanagerFileGarbageCollectionAdditionalFieldProvider implements
         // Add field for file age
         $fieldName = 'tx_scheduler[l10nmgr_fileGarbageCollection_age]';
         $fieldId = 'task_fileGarbageCollection_age';
-        $fieldValue = intval($taskInfo['l10nmgr_fileGarbageCollection_age']);
+        $fieldValue = (int)$taskInfo['l10nmgr_fileGarbageCollection_age'];
         $fieldHtml = '<input type="text" name="' . $fieldName . '" id="' . $fieldId . '" value="' . htmlspecialchars($fieldValue) . '" size="10" />';
 
         $additionalFields[$fieldId] = array(
@@ -116,7 +116,7 @@ class LocalizationmanagerFileGarbageCollectionAdditionalFieldProvider implements
         // Check if number of days is indeed a number and greater than 0
         // If not, fail validation and issue error message
         if (!is_numeric($submittedData['l10nmgr_fileGarbageCollection_age']) ||
-            intval($submittedData['l10nmgr_fileGarbageCollection_age']) <= 0
+	        (int)$submittedData['l10nmgr_fileGarbageCollection_age'] <= 0
         ) {
             $result = false;
             $parentObject->addMessage($GLOBALS['LANG']->sL('LLL:EXT:l10nmgr/tasks/locallang.xml:fileGarbageCollection.invalidAge'),
@@ -135,6 +135,6 @@ class LocalizationmanagerFileGarbageCollectionAdditionalFieldProvider implements
      */
     public function saveAdditionalFields(array $submittedData, tx_scheduler_Task $task)
     {
-        $task->age = intval($submittedData['l10nmgr_fileGarbageCollection_age']);
+        $task->age = (int)$submittedData['l10nmgr_fileGarbageCollection_age'];
     }
 }

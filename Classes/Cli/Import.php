@@ -217,7 +217,7 @@ class Import extends CommandLineController
                 $task = '';
             }
         } elseif (isset($this->cli_args['_DEFAULT'][1])) {
-            $input = intval($this->cli_args['_DEFAULT'][1]);
+            $input = (int)$this->cli_args['_DEFAULT'][1];
             switch ($input) {
                 case 1:
                     $task = 'importString';

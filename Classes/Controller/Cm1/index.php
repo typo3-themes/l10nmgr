@@ -378,7 +378,7 @@ class Cm1 extends BaseScriptClass
             /** @var $viewClass ExcelXmlView */
             $viewClass = GeneralUtility::makeInstance(ExcelXmlView::class, $l10ncfgObj,
                 $this->sysLanguage);
-            $export_xml_forcepreviewlanguage = intval(GeneralUtility::_POST('export_xml_forcepreviewlanguage'));
+            $export_xml_forcepreviewlanguage = (int)GeneralUtility::_POST('export_xml_forcepreviewlanguage');
             if ($export_xml_forcepreviewlanguage > 0) {
                 $viewClass->setForcedSourceLanguage($export_xml_forcepreviewlanguage);
             }
@@ -599,7 +599,7 @@ class Cm1 extends BaseScriptClass
             /** @var $viewClass CatXmlView */
             $viewClass = GeneralUtility::makeInstance(CatXmlView::class, $l10ncfgObj,
                 $this->sysLanguage);
-            $export_xml_forcepreviewlanguage = intval(GeneralUtility::_POST('export_xml_forcepreviewlanguage'));
+            $export_xml_forcepreviewlanguage = (int)GeneralUtility::_POST('export_xml_forcepreviewlanguage');
             if ($export_xml_forcepreviewlanguage > 0) {
                 $viewClass->setForcedSourceLanguage($export_xml_forcepreviewlanguage);
             }

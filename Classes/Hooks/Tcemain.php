@@ -145,17 +145,17 @@ class Tcemain
                 '*',
                 'tx_l10nmgr_index',
                 'tablename=' . $GLOBALS['TYPO3_DB']->fullQuoteStr($p[0], 'tx_l10nmgr_index') .
-                ' AND recuid=' . intval($p[1]) .
+                ' AND recuid=' . (int)$p[1] .
                 ' AND translation_lang IN (' . $languageList . ')' .
-                ' AND workspace=' . intval($GLOBALS['BE_USER']->workspace)
+                ' AND workspace=' . (int)$GLOBALS['BE_USER']->workspace
             );
         } else {
             $records = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows(
                 '*',
                 'tx_l10nmgr_index',
-                'recpid=' . intval($p[1]) .
+                'recpid=' . (int)$p[1] .
                 ' AND translation_lang IN (' . $languageList . ')' .
-                ' AND workspace=' . intval($GLOBALS['BE_USER']->workspace)
+                ' AND workspace=' . (int)$GLOBALS['BE_USER']->workspace
             );
         }
 

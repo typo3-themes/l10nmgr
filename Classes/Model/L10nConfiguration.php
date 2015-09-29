@@ -100,8 +100,8 @@ class L10nConfiguration
 	    $treeStartingRecord = array();
 	    // Showing the tree:
         // Initialize starting point of page tree:
-        $treeStartingPoint = intval($l10ncfg['depth'] == -1 ? GeneralUtility::_GET('srcPID') : $l10ncfg['pid']);
-	    if($treeStartingRecord > 0) {
+        $treeStartingPoint = $l10ncfg['depth'] == -1 ? (int)GeneralUtility::_GET('srcPID') : (int)$l10ncfg['pid'];
+	    if ($treeStartingRecord > 0) {
 	        $treeStartingRecord = BackendUtility::getRecordWSOL('pages', $treeStartingPoint);
 	    }
         $depth = $l10ncfg['depth'];
@@ -147,7 +147,7 @@ class L10nConfiguration
 
         // Serialize back and save it to record:
         $l10ncfg['flexformdiff'] = serialize($flexFormDiffForAllLanguages);
-        $GLOBALS['TYPO3_DB']->exec_UPDATEquery('tx_l10nmgr_cfg', 'uid=' . intval($l10ncfg['uid']),
+        $GLOBALS['TYPO3_DB']->exec_UPDATEquery('tx_l10nmgr_cfg', 'uid=' . (int)$l10ncfg['uid'],
             array('flexformdiff' => $l10ncfg['flexformdiff']));
     }
 }

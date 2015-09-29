@@ -149,7 +149,7 @@ class Module1 extends BaseScriptClass
                 $content .= '<td>' . $configurationDetails . '</td>';
                 $content .= '<td><a href="' . BackendUtility::getModuleUrl('xMOD_txl10nmgrCM1', array(
 		                'id' => $record['uid'],
-		                'srcPID' => intval($this->id)
+		                'srcPID' => (int)$this->id
 	                )) . '">' . $record['title'] . '</a>' . '</td>';
                 // Get the full page path
                 // If very long, make sure to still display the full path
@@ -250,7 +250,7 @@ class Module1 extends BaseScriptClass
      */
     protected function getPageDetails($uid)
     {
-        $uid = intval($uid);
+        $uid = (int)$uid;
         if (isset($this->pageDetails[$uid])) {
             $record = $this->pageDetails[$uid];
         } else {
@@ -302,7 +302,7 @@ class Module1 extends BaseScriptClass
     protected function getLanguageDetails($uid)
     {
         $record = array();
-        $uid = intval($uid);
+        $uid = (int)$uid;
         if ($uid > 0) {
             if (isset($this->languageDetails[$uid])) {
                 $record = $this->languageDetails[$uid];

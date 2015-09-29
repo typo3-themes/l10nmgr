@@ -435,7 +435,7 @@ class Tools
             $allRows = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows(
                 '*',
                 $table,
-                'uid=' . intval($uid) .
+                'uid=' . (int)$uid .
                 ' AND ' . $TCA[$table]['ctrl']['languageField'] . '<=0' .
                 BackendUtility::deleteClause($table) .
                 BackendUtility::versioningPlaceholderClause($table)
@@ -821,7 +821,7 @@ class Tools
             $allRows = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows(
                 '*',
                 $table,
-                'pid=' . intval($pageId) .
+                'pid=' . (int)$pageId .
                 ' AND ' . $TCA[$table]['ctrl']['languageField'] . '<=0' .
                 $hiddenClause .
                 BackendUtility::deleteClause($table) .
@@ -957,6 +957,6 @@ class Tools
      */
     function flushIndexOfWorkspace($ws)
     {
-        $GLOBALS['TYPO3_DB']->exec_DELETEquery('tx_l10nmgr_index', 'workspace=' . intval($ws));
+        $GLOBALS['TYPO3_DB']->exec_DELETEquery('tx_l10nmgr_index', 'workspace=' . (int)$ws);
     }
 }

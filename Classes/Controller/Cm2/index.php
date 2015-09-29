@@ -161,9 +161,9 @@ class Cm2 extends \TYPO3\CMS\Backend\Module\BaseScriptClass
                     '*',
                     'tx_l10nmgr_index',
                     'tablename=' . $GLOBALS['TYPO3_DB']->fullQuoteStr($table, 'tx_l10nmgr_index') .
-                    ' AND recuid=' . intval($uid) .
+                    ' AND recuid=' . (int)$uid .
                     ' AND translation_lang IN (' . $GLOBALS['TYPO3_DB']->cleanIntList($languageList) . ')' .
-                    ' AND workspace=' . intval($GLOBALS['BE_USER']->workspace) .
+                    ' AND workspace=' . (int)$GLOBALS['BE_USER']->workspace .
                     ' AND (flag_new>0 OR flag_update>0 OR flag_noChange>0 OR flag_unknown>0)',
                     '',
                     'translation_lang, tablename, recuid'
@@ -172,9 +172,9 @@ class Cm2 extends \TYPO3\CMS\Backend\Module\BaseScriptClass
                 $records = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows(
                     '*',
                     'tx_l10nmgr_index',
-                    'recpid=' . intval($uid) .
+                    'recpid=' . (int)$uid .
                     ' AND translation_lang IN (' . $GLOBALS['TYPO3_DB']->cleanIntList($languageList) . ')' .
-                    ' AND workspace=' . intval($GLOBALS['BE_USER']->workspace) .
+                    ' AND workspace=' . (int)$GLOBALS['BE_USER']->workspace .
                     ' AND (flag_new>0 OR flag_update>0 OR flag_noChange>0 OR flag_unknown>0)',
                     '',
                     'translation_lang, tablename, recuid'
@@ -217,7 +217,7 @@ class Cm2 extends \TYPO3\CMS\Backend\Module\BaseScriptClass
             if ($GLOBALS['BE_USER']->isAdmin()) {
                 $output .= '<br><br>Functions for "' . $table . ':' . $uid . '":<br/>
 					<input type="submit" name="_updateIndex" value="Update Index" /><br>
-					<input type="submit" name="_" value="Flush Translations" onclick="' . htmlspecialchars('document.location="../cm3/index.php?table=' . htmlspecialchars($table) . '&id=' . intval($uid) . '&cmd=flushTranslations";return false;') . '"/><br>
+					<input type="submit" name="_" value="Flush Translations" onclick="' . htmlspecialchars('document.location="../cm3/index.php?table=' . htmlspecialchars($table) . '&id=' . (int)$uid . '&cmd=flushTranslations";return false;') . '"/><br>
 					<input type="submit" name="_" value="Create priority" onclick="' . htmlspecialchars('document.location="' . $GLOBALS['BACK_PATH'] . 'alt_doc.php?returnUrl=' . rawurlencode('db_list.php?id=0&table=tx_l10nmgr_priorities') . '&edit[tx_l10nmgr_priorities][0]=new&defVals[tx_l10nmgr_priorities][element]=' . rawurlencode($table . '_' . $uid) . '";return false;') . '"/><br>
 					';
             }
