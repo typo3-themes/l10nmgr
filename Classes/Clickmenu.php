@@ -51,7 +51,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  * @package    TYPO3
  * @subpackage tx_l10nmgr
  */
-class Clickmenu
+class ClickMenu
 {
 
     /**
@@ -65,7 +65,7 @@ class Clickmenu
      */
     function main(&$backRef, $menuItems, $table, $uid)
     {
-        global $BE_USER, $TCA, $LANG;
+	    global $BE_USER, $TCA, $LANG;
 
         $localItems = Array();
         if (!$backRef->cmLevel) {

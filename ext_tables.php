@@ -104,8 +104,8 @@ if (TYPO3_MODE == "BE") {
 
     if (TYPO3_MODE == "BE") {
         $GLOBALS["TBE_MODULES_EXT"]["xMOD_alt_clickmenu"]["extendCMclasses"][] = array(
-            "name" => "Clickmenu",
-            "path" => $extPath . "Classes/Clickmenu.php"
+            "name" => "Localizationteam\\L10nmgr\\ClickMenu",
+            "path" => $extPath . "Classes/ClickMenu.php"
         );
 
         // Add context sensitive help (csh) for the Scheduler tasks
