@@ -93,6 +93,8 @@ class Tools
     var $sys_languages = array();
     var $indexFilterObjects = array();
 
+	var $_callBackParams_translationDiffsourceXMLArray;
+
 	/**
 	 * Constructor
 	 * Setting up internal variable ->t8Tools
@@ -299,8 +301,8 @@ class Tools
 
         //echo $dataValue.'<hr>';
         $translValue = $pObj->getArrayValueByPath($structurePath, $this->_callBackParams_translationXMLArray);
-        //TODO:
-        $diffDefaultValue = $dataValue;
+
+	    $diffDefaultValue=$pObj->getArrayValueByPath($structurePath, $this->_callBackParams_translationDiffsourceXMLArray);
 
         foreach ($this->previewLanguages as $prevSysUid) {
             $previewLanguageValues[$prevSysUid] = $pObj->getArrayValueByPath($structurePath,
@@ -435,7 +437,7 @@ class Tools
             $allRows = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows(
                 '*',
                 $table,
-                'uid=' . (int)$uid .
+                'uid=' . intval($uid) .
                 ' AND ' . $TCA[$table]['ctrl']['languageField'] . '<=0' .
                 BackendUtility::deleteClause($table) .
                 BackendUtility::versioningPlaceholderClause($table)
@@ -556,6 +558,12 @@ class Tools
                                         $flexObj = GeneralUtility::makeInstance(FlexFormTools::class);
                                         $this->_callBackParams_keyForTranslationDetails = $key;
                                         $this->_callBackParams_translationXMLArray = GeneralUtility::xml2array($translationRecord[$field]);
+
+	                                    if(is_array($translationRecord)){
+		                                    $diffsource = unserialize($translationRecord['l18n_diffsource']);
+		                                    $this->_callBackParams_translationDiffsourceXMLArray = t3lib_div::xml2array($diffsource[$field]);
+	                                    }
+
                                         foreach ($this->previewLanguages as $prevSysUid) {
                                             $this->_callBackParams_previewLanguageXMLArrays[$prevSysUid] = GeneralUtility::xml2array($prevLangRec[$prevSysUid][$field]);
                                         }
@@ -821,7 +829,7 @@ class Tools
             $allRows = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows(
                 '*',
                 $table,
-                'pid=' . (int)$pageId .
+                'pid=' . intval($pageId) .
                 ' AND ' . $TCA[$table]['ctrl']['languageField'] . '<=0' .
                 $hiddenClause .
                 BackendUtility::deleteClause($table) .
@@ -957,6 +965,6 @@ class Tools
      */
     function flushIndexOfWorkspace($ws)
     {
-        $GLOBALS['TYPO3_DB']->exec_DELETEquery('tx_l10nmgr_index', 'workspace=' . (int)$ws);
+        $GLOBALS['TYPO3_DB']->exec_DELETEquery('tx_l10nmgr_index', 'workspace=' . intval($ws));
     }
 }
