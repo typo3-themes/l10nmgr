@@ -561,7 +561,7 @@ class Tools
 
 	                                    if(is_array($translationRecord)){
 		                                    $diffsource = unserialize($translationRecord['l18n_diffsource']);
-		                                    $this->_callBackParams_translationDiffsourceXMLArray = t3lib_div::xml2array($diffsource[$field]);
+		                                    $this->_callBackParams_translationDiffsourceXMLArray = GeneralUtility::xml2array($diffsource[$field]);
 	                                    }
 
                                         foreach ($this->previewLanguages as $prevSysUid) {
